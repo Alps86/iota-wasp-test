@@ -1,0 +1,23 @@
+name: sc
+description: sc description
+events:
+  bet:
+    address: Address // address of better
+    amount: Int64 // amount of iotas to bet
+    number: Int64 // number to bet on
+structs: {}
+typedefs: {}
+state:
+  owner: AgentID // current owner of this smart contract
+funcs:
+  init:
+    params:
+      owner: AgentID? // optional owner of this smart contract
+  setOwner:
+    access: owner // current owner of this smart contract
+    params:
+      owner: AgentID // new owner of this smart contract
+views:
+  getOwner:
+    results:
+      owner: AgentID // current owner of this smart contract
