@@ -19,21 +19,15 @@ func main() {
 
 	c := client.NewWaspClient("http://localhost:9090", http.Client{})
 	info, err := c.Info()
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 
 	fmt.Println(info)
 
 	chain, err := iscp.ChainIDFromString("nAstjWkRwdUSA197pMQTYUzLnL4RpaLmzWnoedeCCL8Y")
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 
 	seedBytes, err := base58.Decode("3z3xSNwQLbkRd7NbhEBGgvnhgEToaRMwpbxSuzdMZzfT")
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 
 	s := seed.NewSeed(seedBytes)
 	args := requestargs.New()
@@ -41,14 +35,10 @@ func main() {
 	req.Sign(s.KeyPair(0))
 
 	err = c.PostOffLedgerRequest(chain, req)
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 
 	dic, err := c.CallView(chain, iscp.Hn("test"), "getCounter", nil, time.Second*30)
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 
 	counter, err := dic.Get("counter")
 	checkError(err)
