@@ -11,30 +11,56 @@ import "github.com/iotaledger/wasp/packages/vm/wasmlib/go/wasmlib"
 
 const (
 	ScName        = "sc"
-	ScDescription = "sc description"
+	ScDescription = ""
 	HScName       = wasmlib.ScHname(0x210c291a)
 )
 
 const (
-	ParamOwner = "owner"
+	ParamCounter    = "counter"
+	ParamDelay      = "delay"
+	ParamDummy      = "dummy"
+	ParamNumRepeats = "numRepeats"
 )
 
 const (
-	ResultOwner = "owner"
+	ResultCounter = "counter"
 )
 
 const (
-	StateOwner = "owner"
+	StateCounter    = "counter"
+	StateNumRepeats = "numRepeats"
 )
 
 const (
-	FuncInit     = "init"
-	FuncSetOwner = "setOwner"
-	ViewGetOwner = "getOwner"
+	FuncCallIncrement          = "callIncrement"
+	FuncCallIncrementRecurse5x = "callIncrementRecurse5x"
+	FuncEndlessLoop            = "endlessLoop"
+	FuncIncrement              = "increment"
+	FuncIncrementWithDelay     = "incrementWithDelay"
+	FuncInit                   = "init"
+	FuncLocalStateInternalCall = "localStateInternalCall"
+	FuncLocalStatePost         = "localStatePost"
+	FuncLocalStateSandboxCall  = "localStateSandboxCall"
+	FuncPostIncrement          = "postIncrement"
+	FuncRepeatMany             = "repeatMany"
+	FuncTestLeb128             = "testLeb128"
+	FuncWhenMustIncrement      = "whenMustIncrement"
+	ViewGetCounter             = "getCounter"
 )
 
 const (
-	HFuncInit     = wasmlib.ScHname(0x1f44d644)
-	HFuncSetOwner = wasmlib.ScHname(0x2a15fe7b)
-	HViewGetOwner = wasmlib.ScHname(0x137107a6)
+	HFuncCallIncrement          = wasmlib.ScHname(0xeb5dcacd)
+	HFuncCallIncrementRecurse5x = wasmlib.ScHname(0x8749fbff)
+	HFuncEndlessLoop            = wasmlib.ScHname(0x365f0929)
+	HFuncIncrement              = wasmlib.ScHname(0xd351bd12)
+	HFuncIncrementWithDelay     = wasmlib.ScHname(0xa235bba7)
+	HFuncInit                   = wasmlib.ScHname(0x1f44d644)
+	HFuncLocalStateInternalCall = wasmlib.ScHname(0xecfc5d33)
+	HFuncLocalStatePost         = wasmlib.ScHname(0x3fd54d13)
+	HFuncLocalStateSandboxCall  = wasmlib.ScHname(0x7bd22c53)
+	HFuncPostIncrement          = wasmlib.ScHname(0x81c772f5)
+	HFuncRepeatMany             = wasmlib.ScHname(0x4ff450d3)
+	HFuncTestLeb128             = wasmlib.ScHname(0xd8364cb9)
+	HFuncWhenMustIncrement      = wasmlib.ScHname(0xb4c3e7a6)
+	HViewGetCounter             = wasmlib.ScHname(0xb423e607)
 )

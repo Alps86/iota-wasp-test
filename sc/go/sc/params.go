@@ -9,34 +9,66 @@ package sc
 
 import "github.com/iotaledger/wasp/packages/vm/wasmlib/go/wasmlib"
 
+type ImmutableIncrementWithDelayParams struct {
+	id int32
+}
+
+func (s ImmutableIncrementWithDelayParams) Delay() wasmlib.ScImmutableInt32 {
+	return wasmlib.NewScImmutableInt32(s.id, idxMap[IdxParamDelay])
+}
+
+type MutableIncrementWithDelayParams struct {
+	id int32
+}
+
+func (s MutableIncrementWithDelayParams) Delay() wasmlib.ScMutableInt32 {
+	return wasmlib.NewScMutableInt32(s.id, idxMap[IdxParamDelay])
+}
+
 type ImmutableInitParams struct {
 	id int32
 }
 
-func (s ImmutableInitParams) Owner() wasmlib.ScImmutableAgentID {
-	return wasmlib.NewScImmutableAgentID(s.id, idxMap[IdxParamOwner])
+func (s ImmutableInitParams) Counter() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxParamCounter])
 }
 
 type MutableInitParams struct {
 	id int32
 }
 
-func (s MutableInitParams) Owner() wasmlib.ScMutableAgentID {
-	return wasmlib.NewScMutableAgentID(s.id, idxMap[IdxParamOwner])
+func (s MutableInitParams) Counter() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxParamCounter])
 }
 
-type ImmutableSetOwnerParams struct {
+type ImmutableRepeatManyParams struct {
 	id int32
 }
 
-func (s ImmutableSetOwnerParams) Owner() wasmlib.ScImmutableAgentID {
-	return wasmlib.NewScImmutableAgentID(s.id, idxMap[IdxParamOwner])
+func (s ImmutableRepeatManyParams) NumRepeats() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxParamNumRepeats])
 }
 
-type MutableSetOwnerParams struct {
+type MutableRepeatManyParams struct {
 	id int32
 }
 
-func (s MutableSetOwnerParams) Owner() wasmlib.ScMutableAgentID {
-	return wasmlib.NewScMutableAgentID(s.id, idxMap[IdxParamOwner])
+func (s MutableRepeatManyParams) NumRepeats() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxParamNumRepeats])
+}
+
+type ImmutableWhenMustIncrementParams struct {
+	id int32
+}
+
+func (s ImmutableWhenMustIncrementParams) Dummy() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxParamDummy])
+}
+
+type MutableWhenMustIncrementParams struct {
+	id int32
+}
+
+func (s MutableWhenMustIncrementParams) Dummy() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxParamDummy])
 }

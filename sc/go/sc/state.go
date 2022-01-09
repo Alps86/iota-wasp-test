@@ -13,14 +13,22 @@ type ImmutablescState struct {
 	id int32
 }
 
-func (s ImmutablescState) Owner() wasmlib.ScImmutableAgentID {
-	return wasmlib.NewScImmutableAgentID(s.id, idxMap[IdxStateOwner])
+func (s ImmutablescState) Counter() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxStateCounter])
+}
+
+func (s ImmutablescState) NumRepeats() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxStateNumRepeats])
 }
 
 type MutablescState struct {
 	id int32
 }
 
-func (s MutablescState) Owner() wasmlib.ScMutableAgentID {
-	return wasmlib.NewScMutableAgentID(s.id, idxMap[IdxStateOwner])
+func (s MutablescState) Counter() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxStateCounter])
+}
+
+func (s MutablescState) NumRepeats() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxStateNumRepeats])
 }

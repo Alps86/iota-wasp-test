@@ -12,17 +12,107 @@ import "github.com/iotaledger/wasp/packages/vm/wasmlib/go/wasmlib"
 
 func OnLoad() {
 	exports := wasmlib.NewScExports()
+	exports.AddFunc(FuncCallIncrement, funcCallIncrementThunk)
+	exports.AddFunc(FuncCallIncrementRecurse5x, funcCallIncrementRecurse5xThunk)
+	exports.AddFunc(FuncEndlessLoop, funcEndlessLoopThunk)
+	exports.AddFunc(FuncIncrement, funcIncrementThunk)
+	exports.AddFunc(FuncIncrementWithDelay, funcIncrementWithDelayThunk)
 	exports.AddFunc(FuncInit, funcInitThunk)
-	exports.AddFunc(FuncSetOwner, funcSetOwnerThunk)
-	exports.AddView(ViewGetOwner, viewGetOwnerThunk)
+	exports.AddFunc(FuncLocalStateInternalCall, funcLocalStateInternalCallThunk)
+	exports.AddFunc(FuncLocalStatePost, funcLocalStatePostThunk)
+	exports.AddFunc(FuncLocalStateSandboxCall, funcLocalStateSandboxCallThunk)
+	exports.AddFunc(FuncPostIncrement, funcPostIncrementThunk)
+	exports.AddFunc(FuncRepeatMany, funcRepeatManyThunk)
+	exports.AddFunc(FuncTestLeb128, funcTestLeb128Thunk)
+	exports.AddFunc(FuncWhenMustIncrement, funcWhenMustIncrementThunk)
+	exports.AddView(ViewGetCounter, viewGetCounterThunk)
 
 	for i, key := range keyMap {
 		idxMap[i] = key.KeyID()
 	}
 }
 
+type CallIncrementContext struct {
+	State MutablescState
+}
+
+func funcCallIncrementThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcCallIncrement")
+	f := &CallIncrementContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcCallIncrement(ctx, f)
+	ctx.Log("sc.funcCallIncrement ok")
+}
+
+type CallIncrementRecurse5xContext struct {
+	State MutablescState
+}
+
+func funcCallIncrementRecurse5xThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcCallIncrementRecurse5x")
+	f := &CallIncrementRecurse5xContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcCallIncrementRecurse5x(ctx, f)
+	ctx.Log("sc.funcCallIncrementRecurse5x ok")
+}
+
+type EndlessLoopContext struct {
+	State MutablescState
+}
+
+func funcEndlessLoopThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcEndlessLoop")
+	f := &EndlessLoopContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcEndlessLoop(ctx, f)
+	ctx.Log("sc.funcEndlessLoop ok")
+}
+
+type IncrementContext struct {
+	State MutablescState
+}
+
+func funcIncrementThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcIncrement")
+	f := &IncrementContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcIncrement(ctx, f)
+	ctx.Log("sc.funcIncrement ok")
+}
+
+type IncrementWithDelayContext struct {
+	Params ImmutableIncrementWithDelayParams
+	State  MutablescState
+}
+
+func funcIncrementWithDelayThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcIncrementWithDelay")
+	f := &IncrementWithDelayContext{
+		Params: ImmutableIncrementWithDelayParams{
+			id: wasmlib.OBJ_ID_PARAMS,
+		},
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	ctx.Require(f.Params.Delay().Exists(), "missing mandatory delay")
+	funcIncrementWithDelay(ctx, f)
+	ctx.Log("sc.funcIncrementWithDelay ok")
+}
+
 type InitContext struct {
-	Events scEvents
 	Params ImmutableInitParams
 	State  MutablescState
 }
@@ -41,48 +131,134 @@ func funcInitThunk(ctx wasmlib.ScFuncContext) {
 	ctx.Log("sc.funcInit ok")
 }
 
-type SetOwnerContext struct {
-	Events scEvents
-	Params ImmutableSetOwnerParams
+type LocalStateInternalCallContext struct {
+	State MutablescState
+}
+
+func funcLocalStateInternalCallThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcLocalStateInternalCall")
+	f := &LocalStateInternalCallContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcLocalStateInternalCall(ctx, f)
+	ctx.Log("sc.funcLocalStateInternalCall ok")
+}
+
+type LocalStatePostContext struct {
+	State MutablescState
+}
+
+func funcLocalStatePostThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcLocalStatePost")
+	f := &LocalStatePostContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcLocalStatePost(ctx, f)
+	ctx.Log("sc.funcLocalStatePost ok")
+}
+
+type LocalStateSandboxCallContext struct {
+	State MutablescState
+}
+
+func funcLocalStateSandboxCallThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcLocalStateSandboxCall")
+	f := &LocalStateSandboxCallContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcLocalStateSandboxCall(ctx, f)
+	ctx.Log("sc.funcLocalStateSandboxCall ok")
+}
+
+type PostIncrementContext struct {
+	State MutablescState
+}
+
+func funcPostIncrementThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcPostIncrement")
+	f := &PostIncrementContext{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcPostIncrement(ctx, f)
+	ctx.Log("sc.funcPostIncrement ok")
+}
+
+type RepeatManyContext struct {
+	Params ImmutableRepeatManyParams
 	State  MutablescState
 }
 
-func funcSetOwnerThunk(ctx wasmlib.ScFuncContext) {
-	ctx.Log("sc.funcSetOwner")
-
-	// current owner of this smart contract
-	access := ctx.State().GetAgentID(wasmlib.Key("owner"))
-	ctx.Require(access.Exists(), "access not set: owner")
-	ctx.Require(ctx.Caller() == access.Value(), "no permission")
-
-	f := &SetOwnerContext{
-		Params: ImmutableSetOwnerParams{
+func funcRepeatManyThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcRepeatMany")
+	f := &RepeatManyContext{
+		Params: ImmutableRepeatManyParams{
 			id: wasmlib.OBJ_ID_PARAMS,
 		},
 		State: MutablescState{
 			id: wasmlib.OBJ_ID_STATE,
 		},
 	}
-	ctx.Require(f.Params.Owner().Exists(), "missing mandatory owner")
-	funcSetOwner(ctx, f)
-	ctx.Log("sc.funcSetOwner ok")
+	funcRepeatMany(ctx, f)
+	ctx.Log("sc.funcRepeatMany ok")
 }
 
-type GetOwnerContext struct {
-	Results MutableGetOwnerResults
+type TestLeb128Context struct {
+	State MutablescState
+}
+
+func funcTestLeb128Thunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcTestLeb128")
+	f := &TestLeb128Context{
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcTestLeb128(ctx, f)
+	ctx.Log("sc.funcTestLeb128 ok")
+}
+
+type WhenMustIncrementContext struct {
+	Params ImmutableWhenMustIncrementParams
+	State  MutablescState
+}
+
+func funcWhenMustIncrementThunk(ctx wasmlib.ScFuncContext) {
+	ctx.Log("sc.funcWhenMustIncrement")
+	f := &WhenMustIncrementContext{
+		Params: ImmutableWhenMustIncrementParams{
+			id: wasmlib.OBJ_ID_PARAMS,
+		},
+		State: MutablescState{
+			id: wasmlib.OBJ_ID_STATE,
+		},
+	}
+	funcWhenMustIncrement(ctx, f)
+	ctx.Log("sc.funcWhenMustIncrement ok")
+}
+
+type GetCounterContext struct {
+	Results MutableGetCounterResults
 	State   ImmutablescState
 }
 
-func viewGetOwnerThunk(ctx wasmlib.ScViewContext) {
-	ctx.Log("sc.viewGetOwner")
-	f := &GetOwnerContext{
-		Results: MutableGetOwnerResults{
+func viewGetCounterThunk(ctx wasmlib.ScViewContext) {
+	ctx.Log("sc.viewGetCounter")
+	f := &GetCounterContext{
+		Results: MutableGetCounterResults{
 			id: wasmlib.OBJ_ID_RESULTS,
 		},
 		State: ImmutablescState{
 			id: wasmlib.OBJ_ID_STATE,
 		},
 	}
-	viewGetOwner(ctx, f)
-	ctx.Log("sc.viewGetOwner ok")
+	viewGetCounter(ctx, f)
+	ctx.Log("sc.viewGetCounter ok")
 }

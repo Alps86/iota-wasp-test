@@ -9,18 +9,18 @@ package sc
 
 import "github.com/iotaledger/wasp/packages/vm/wasmlib/go/wasmlib"
 
-type ImmutableGetOwnerResults struct {
+type ImmutableGetCounterResults struct {
 	id int32
 }
 
-func (s ImmutableGetOwnerResults) Owner() wasmlib.ScImmutableAgentID {
-	return wasmlib.NewScImmutableAgentID(s.id, idxMap[IdxResultOwner])
+func (s ImmutableGetCounterResults) Counter() wasmlib.ScImmutableInt64 {
+	return wasmlib.NewScImmutableInt64(s.id, idxMap[IdxResultCounter])
 }
 
-type MutableGetOwnerResults struct {
+type MutableGetCounterResults struct {
 	id int32
 }
 
-func (s MutableGetOwnerResults) Owner() wasmlib.ScMutableAgentID {
-	return wasmlib.NewScMutableAgentID(s.id, idxMap[IdxResultOwner])
+func (s MutableGetCounterResults) Counter() wasmlib.ScMutableInt64 {
+	return wasmlib.NewScMutableInt64(s.id, idxMap[IdxResultCounter])
 }

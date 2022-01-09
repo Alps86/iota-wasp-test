@@ -10,19 +10,27 @@ package sc
 import "github.com/iotaledger/wasp/packages/vm/wasmlib/go/wasmlib"
 
 const (
-	IdxParamOwner = 0
+	IdxParamCounter    = 0
+	IdxParamDelay      = 1
+	IdxParamDummy      = 2
+	IdxParamNumRepeats = 3
 
-	IdxResultOwner = 1
+	IdxResultCounter = 4
 
-	IdxStateOwner = 2
+	IdxStateCounter    = 5
+	IdxStateNumRepeats = 6
 )
 
-const keyMapLen = 3
+const keyMapLen = 7
 
 var keyMap = [keyMapLen]wasmlib.Key{
-	ParamOwner,
-	ResultOwner,
-	StateOwner,
+	ParamCounter,
+	ParamDelay,
+	ParamDummy,
+	ParamNumRepeats,
+	ResultCounter,
+	StateCounter,
+	StateNumRepeats,
 }
 
 var idxMap [keyMapLen]wasmlib.Key32

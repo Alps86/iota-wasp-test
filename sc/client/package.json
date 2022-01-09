@@ -1,0 +1,6 @@
+{
+  "name": "sc-client",
+  "dependencies": {
+    "wasmlib": "file:../foo/bar"
+  }
+}
